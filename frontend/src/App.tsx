@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import MapWrapper from "./map/MapContainer";
+import MapWrapper from "./map/MapContainer.jsx";
 
 function App() {
   return (

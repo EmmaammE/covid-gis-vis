@@ -11,8 +11,9 @@ const ATTRIBUTION: string =
   'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
 
 // the center point of map
-const CENTER: LatLngTuple = [29.896136, 121.644553];
+// const CENTER: LatLngTuple = [29.896136, 121.644553];
+const CENTER: LatLngTuple = [18.896136, 110.22];
 // the zoom level
-const ZOOM: number = 7;
+const ZOOM: number = 8.5;
 
 export { URL, ATTRIBUTION, CENTER, ZOOM, token };

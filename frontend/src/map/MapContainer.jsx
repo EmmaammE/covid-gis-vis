@@ -4,42 +4,63 @@ import { TileLayer, MapContainer, Marker, useMap } from "react-leaflet";
 import CanvasMarkersLayer from "react-leaflet-canvas-markers";
 import "./box.map.css";
 import "./main.map.css";
-import * as L from "leaflet";
-
-const myRenderer = L.canvas({ padding: 0.02 });
-
-function MapMarkers() {
-  const map = useMap();
-
-  useEffect(() => {
-    L.circleMarker([29.896136, 121.644553], {
-      color: "blue",
-      fillColor: "blue",
-      fillOpacity: 0.2,
-      weight: 1,
-      radius: 30,
-      renderer: myRenderer,
-    })
-      .addTo(map)
-      .bindPopup("marker");
-  }, []);
-
-  return null;
-}
+import MapMarkers from "./MapMarkers.jsx";
 
 function MapWrapper() {
   const [center, setCenter] = useState(CENTER);
   const [zoom, setZoom] = useState(ZOOM);
+  const [points, setPoints] = useState([]);
 
   // mapref
-  const $map = useRef<any>(null);
-  const $container = useRef<any>(null);
+  const $map = useRef(null);
+  const $container = useRef(null);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    fetch("/getAllData/", { method: "POST" })
+      .then((res) => {
+        console.log(res);
+
+        return res.json();
+      })
+      .then((res) => {
+        if (res.status === "success") {
+          let resArr = [];
+          Object.keys(res.data).forEach((key) => {
+            let traj = res.data[key];
+            traj.forEach((path) => {
+              let pointsStrArr = path.split(";");
+
+              let pathArr = [];
+              pointsStrArr.forEach((str, i) => {
+                if (i === 0) {
+                  return;
+                }
+
+                let latlng = str
+                  .split(",")
+                  .map((d) => +d)
+                  .reverse();
+                latlng.length === 2 && pathArr.push(latlng);
+              });
+
+              resArr.push({
+                path: pathArr,
+                flag: +pointsStrArr[0],
+              });
+            });
+          });
+
+          console.log(resArr);
+          setPoints(resArr);
+        }
+      });
   }, []);
 
-  const handleScroll = (e: any) => {
+  useEffect(() => {
+    // window.addEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleScroll = (e) => {
     let tempY;
 
     console.log(window.pageYOffset, $container.current.offsetTop);
@@ -70,10 +91,10 @@ function MapWrapper() {
   return (
     <div className="container" ref={$container}>
       <MapContainer
-        scrollWheelZoom={false}
         id="map"
         center={CENTER}
         zoom={ZOOM}
+        scrollWheelZoom={false}
       >
         <TileLayer attribution={ATTRIBUTION} url={URL} />
 
@@ -81,7 +102,7 @@ function MapWrapper() {
           <Marker position={[22.5774626732038, 114.04924392700197]} icon={defaultIcon}>
           </Marker>
         </CanvasMarkersLayer> */}
-        <MapMarkers />
+        <MapMarkers pos={points} />
       </MapContainer>
       <div className="box-wrapper"></div>
     </div>
