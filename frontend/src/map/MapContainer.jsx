@@ -5,15 +5,19 @@ import CanvasMarkersLayer from "react-leaflet-canvas-markers";
 import "./box.map.css";
 import "./main.map.css";
 import MapMarkers from "./MapMarkers.jsx";
+import MapGeojson from "./MapGeojson";
 
 function MapWrapper() {
   const [center, setCenter] = useState(CENTER);
   const [zoom, setZoom] = useState(ZOOM);
   const [points, setPoints] = useState([]);
+  const [step, setStep] = useState(1);
 
   // mapref
   const $map = useRef(null);
   const $container = useRef(null);
+
+  // map.fitBounds(polyline.getBounds());
 
   useEffect(() => {
     fetch("/getAllData/", { method: "POST" })
@@ -102,9 +106,16 @@ function MapWrapper() {
           <Marker position={[22.5774626732038, 114.04924392700197]} icon={defaultIcon}>
           </Marker>
         </CanvasMarkersLayer> */}
-        <MapMarkers pos={points} />
+        {step === 0 ? <MapGeojson /> : <MapMarkers pos={points} />}
       </MapContainer>
-      <div className="box-wrapper"></div>
+      <div className="box-wrapper">
+        <div>湖北接触史：</div>
+        <ul>
+          <li>有</li>
+          <li>无</li>
+          <li>未知</li>
+        </ul>
+      </div>
     </div>
   );
 }

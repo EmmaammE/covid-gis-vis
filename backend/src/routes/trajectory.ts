@@ -1,5 +1,9 @@
 import Router from "koa-router";
-const { getAllData, init } = require("../controllers/trajectory");
+const {
+  getDataByProvince,
+  getAllData,
+  init,
+} = require("../controllers/trajectory");
 
 const router = new Router();
 
@@ -28,6 +32,18 @@ router.post("/getAllData", async (ctx) => {
     ctx.body = {
       status: "success",
       data: await getAllData(),
+    };
+  } catch (e) {
+    console.error(e);
+  }
+});
+
+router.post("/getNumber", async (ctx) => {
+  try {
+    ctx.status = 200;
+    ctx.body = {
+      status: "success",
+      data: await getDataByProvince(),
     };
   } catch (e) {
     console.error(e);

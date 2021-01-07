@@ -15,5 +15,6 @@ const ATTRIBUTION: string =
 const CENTER: LatLngTuple = [18.896136, 110.22];
 // the zoom level
 const ZOOM: number = 8.5;
+// const ZOOM: number = 4.8;
 
 export { URL, ATTRIBUTION, CENTER, ZOOM, token };

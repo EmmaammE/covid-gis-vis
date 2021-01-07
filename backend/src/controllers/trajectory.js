@@ -1,5 +1,7 @@
 // 处理轨迹数据
+const { rejects } = require("assert");
 const fs = require("fs");
+const { resolve } = require("path");
 const path = require("path");
 const storage = require("../storage/redis");
 
@@ -11,10 +13,9 @@ const status = {
   未知: 2,
 };
 
+const pathName = "../json";
 class TrajectoryCtl {
   init() {
-    const pathName = "../json";
-
     // 将所有数据存储到redis中
     fs.readdirSync(path.resolve(__dirname, pathName)).forEach((file) => {
       fs.readFile(
@@ -70,6 +71,44 @@ class TrajectoryCtl {
     }
 
     return res;
+  }
+
+  async getDataByProvince() {
+    return new Promise((resolve, reject) => {
+      fs.readFile(
+        path.resolve(__dirname, pathName, "DXYArea.json"),
+        "utf-8",
+        (err, data) => {
+          if (err) reject(err);
+
+          let obj = {};
+          JSON.parse(data).forEach((province) => {
+            if (province["countryName"] === "中国") {
+              // 如果该省份属于中国
+              let name = province["provinceName"];
+              // if(obj[name]) {
+              // if(obj[name]['updateTime'] > province['updateTime']) {
+              //   // 如果存的更新时间比当前的更大，则更新，就不用再更新了
+              //   return;
+              // }
+              //   return;
+              // }
+              // obj[name] = {
+              //   count: province['confirmedCount'],
+              //   updateTime: province["updateTime"]
+              // };
+
+              // 这数据就是按照时序存的
+              if (obj[name] === undefined) {
+                obj[name] = province["confirmedCount"];
+              }
+            }
+          });
+
+          resolve(obj);
+        }
+      );
+    });
   }
 }
 

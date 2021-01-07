@@ -5,7 +5,7 @@ import { ATTRIBUTION, URL, CENTER, ZOOM, token } from "../util/map";
 
 const myRenderer = L.canvas({ padding: 0.02 });
 
-const fillColor = ["#ebd8e4", "#0095c1", "#777"];
+const fillColor = ["#ebd8e4", " #93b7c2", "#777"];
 const color = ["#ff0080", "#0095c1", "#878787"];
 function MapMarkers({ pos }) {
   const map = useMap();
@@ -29,7 +29,7 @@ function MapMarkers({ pos }) {
             fillOpacity: 0.2,
             weight: 1,
             // radius: 1.5,
-            radius: 5,
+            radius: 3,
             renderer: myRenderer,
           }).addTo(map);
         });

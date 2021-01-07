@@ -1,7 +1,7 @@
 .box-wrapper {
   width: 20vw;
   max-width: 320px;
-  height: 60vh;
+  height: 35vh;
   background: #fafafa;
   box-shadow: 0 2px 18px 0 rgba(0, 0, 0, 0.18);
   padding: 16px 32px 24px 32px;
@@ -15,4 +15,42 @@
 
 .container {
   position: relative;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+li {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+li::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border: 1px solid #ff0080;
+  background-color: #ebd8e4;
+  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  margin: 0;
+  padding: 0;
+}
+
+li:nth-child(2) ::before {
+  border: 1px solid #0095c1;
+  background-color: #93b7c2;
+}
+
+li:nth-child(3) ::before {
+  border: 1px solid #777;
+  background-color: #878787;
 }
